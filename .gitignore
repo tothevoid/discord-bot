@@ -1,0 +1,5 @@
+*.csv
+*.txt
+stats.json
+config.py
+__pycache__
