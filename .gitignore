@@ -3,3 +3,5 @@
 stats.json
 config.py
 __pycache__
+settings.json
+launch.json

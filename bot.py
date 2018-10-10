@@ -15,7 +15,7 @@ delay = 60
 async def on_ready():
     print('Bot loaded:')
     print(client.user.name, client.user.id)
-    await stats()
+    # await stats()
 
 async def stats():
     while True:
@@ -35,5 +35,7 @@ async def on_message(message):
         await client.send_message(message.channel, cmd.last_films(message.content))
     elif message.content.startswith(cfg.sign+'addfilm'):
         await client.send_message(message.channel, cmd.add_film(message.content))
+    elif message.content.startswith(cfg.sign+'dev'):
+        await client.send_message(message.channel, cmd.get_stats())
 
 client.run(cfg.token)
