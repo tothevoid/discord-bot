@@ -19,18 +19,14 @@ def add_film(req):
     return name + ' added'
 
 def last_films(req):
-    num = get_second_part(req)
+    parts = req.split(' ')
+    num = parts[len(parts)-1]
     if num.isdigit():
         quantity = int(num)
         films = watched_films[-1*quantity:]
         return ''.join(films)
     else:
         return '```\nExample: !lastfilms 5\n```'
-
-def get_second_part(msg):
-    parts = msg.split(' ')
-    last = parts[len(parts)-1]
-    return last
 
 def rnd_film():
     num = rnd.randint(0,len(watched_films)-1)
@@ -44,5 +40,4 @@ def get_stats():
     commit_info = info[0]['commit']['author']
     date = commit_info['date']
     name = commit_info['name']
-
     return 'Total commits: %s. Last commit by %s (%s)' % (total_commits, name, date)
