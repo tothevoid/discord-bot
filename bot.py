@@ -15,18 +15,7 @@ delay = 60
 async def on_ready():
     print('Bot loaded:')
     print(client.user.name, client.user.id)
-    # await stats()
 
-async def stats():
-    while True:
-        users = dict()
-        for member in client.get_all_members():
-            users['time'] = str(datetime.datetime.now())
-            if member.game == None:
-                users[member.id] = 'null'
-            else:
-                users[member.id] = member.game.name
-        
 @client.event
 async def on_message(message):
     if message.content.startswith(cfg.sign+'film'):
