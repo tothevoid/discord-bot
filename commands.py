@@ -32,16 +32,16 @@ def add_film(msg):
 
 def append_in_file(msg, name, fl_name):
     with open(fl_name+'.json', mode='w', encoding='utf-8') as fl:
-        local_time = msg.timestamp + timedelta(hours=cfg.gmt)
-        time = local_time.strftime(cfg.datetime_format)
+        local_date = msg.timestamp + timedelta(hours=cfg.gmt)
+        date = local_date.strftime(cfg.datetime_format)
         author = msg.author.name
-        new_item = {'name':name,'sender':author,'time':str(time)}
+        new_item = {'name':name,'sender':author,'time':str(date)}
         if (fl_name == 'watch'):
             watch_films.append(new_item)
         else:
             watched_films.append(new_item)
         json.dump(watch_films, fl, ensure_ascii=False)
-    return author, time
+    return author, date
 
 def last_films(req):
     if (len(watched_films)==0):
@@ -81,6 +81,7 @@ def get_stats():
     info = json.loads(response.text)
     total_commits = len(info)    
     commit_info = info[0]['commit']['author']
-    date = commit_info['date']
     name = commit_info['name']
+    local_date = datetime.strptime(commit_info['date'],'%Y-%m-%dT%H:%M:%SZ') + timedelta(hours=3)
+    date = local_date.strftime('%H:%M %d-%m-%y')
     return 'Total commits: %s. Last commit by %s (%s)' % (total_commits, name, date)
