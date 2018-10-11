@@ -6,13 +6,13 @@ import requests
 import json
 import config as cfg
 
-with open('watch.json', encoding='utf-8') as fl:
+with open('watch.json', mode='w+', encoding='utf-8') as fl:
     txt = fl.read()
     if txt == '':
         watch_films = []
     else:    
         watch_films = json.loads(txt)
-with open('watched.json', encoding='utf-8') as fl:
+with open('watched.json', mode='w+', encoding='utf-8') as fl:
     txt = fl.read()
     if txt == '':
         watched_films = []
@@ -44,16 +44,20 @@ def append_in_file(msg, name, fl_name):
     return author, time
 
 def last_films(req):
+    if (len(watched_films)==0):
+        return ':sweat_smile: empty watched films list'
     parts = req.split(' ')
     num = parts[len(parts)-1]
     if num.isdigit():
         quantity = int(num)
         films = [film['name'] for film in watched_films[-1*quantity:]]
-        return ''.join(films)
+        return '\n'.join(films)
     else:
         return '```\nExample: !lastfilms 5\n```'
 
 def rnd_film():
+    if (len(watch_films)==0):
+        return ':sweat_smile: empty films list'
     num = rnd.randint(0,len(watch_films)-1)
     msg = ":video_camera: Today's film: " + watch_films[num]['name']
     return msg

@@ -2,7 +2,6 @@ import discord
 import asyncio
 import requests
 import io
-import fix
 import commands as cmd
 import config as cfg
 import datetime
