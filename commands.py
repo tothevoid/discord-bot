@@ -82,6 +82,6 @@ def get_stats():
     total_commits = len(info)    
     commit_info = info[0]['commit']['author']
     name = commit_info['name']
-    local_date = datetime.strptime(commit_info['date'],'%Y-%m-%dT%H:%M:%SZ') + timedelta(hours=3)
-    date = local_date.strftime('%H:%M %d-%m-%y')
+    local_date = datetime.strptime(commit_info['date'],'%Y-%m-%dT%H:%M:%SZ') + timedelta(cfg.gmt)
+    date = local_date.strftime(cfg.datetime_format)
     return 'Total commits: %s. Last commit by %s (%s)' % (total_commits, name, date)
