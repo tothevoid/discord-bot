@@ -1,5 +1,7 @@
 *.csv
 *.txt
+watch*.json
+fix.py
 stats.json
 config.py
 __pycache__
