@@ -7,3 +7,4 @@ config.py
 __pycache__
 settings.json
 launch.json
+google_search_module/search_test.py

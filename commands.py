@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 import requests
 import json
 import config as cfg
+import movie_search_module
 
 with open('watch.json', mode='w+', encoding='utf-8') as fl:
     txt = fl.read()
@@ -55,11 +56,12 @@ def last_films(req):
     else:
         return '```\nExample: !lastfilms 5\n```'
 
-def rnd_film():
+def rnd_film():   
+    movie_search = movie_search_module.MovieSearch(cfg.google_key, cfg.google_search_id) 
     if (len(watch_films)==0):
         return ':sweat_smile: empty films list'
     num = rnd.randint(0,len(watch_films)-1)
-    msg = ":video_camera: Today's film: " + watch_films[num]['name']
+    msg = ":video_camera: Today's film: " + watch_films[num]['name'] + "\n Link: " + movie_search.get_kinopoisk_link(watch_films[num]['name'])
     return msg
 
 def set_watched(msg):
