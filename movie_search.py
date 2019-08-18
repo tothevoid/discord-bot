@@ -1,10 +1,10 @@
-import google_search_module.search_module as google_module
+import extensions.google_search as google_search
 import config
 import json
 
 class MovieSearch:
     def __init__(self, google_key, google_search_id):
-        self.search_module = google_module.GoogleSearch(google_key,google_search_id)
+        self.search_module = google_search.GoogleSearch(google_key,google_search_id)
 
     def get_movie_link(self, movie_name):        
         response = json.loads(self.search_module.search(movie_name))

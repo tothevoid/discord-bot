@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 import requests
 import json
 import config as cfg
-import movie_search_module
+import movie_search
 
 with open('watch.json', mode='w+', encoding='utf-8') as fl:
     txt = fl.read()
@@ -33,7 +33,7 @@ def add_film(msg):
 
 def append_in_file(msg, name, fl_name):
     with open(fl_name+'.json', mode='w', encoding='utf-8') as fl:
-        local_date = msg.timestamp + timedelta(hours=cfg.gmt)
+        local_date = msg.created_at + timedelta(hours = cfg.gmt)
         date = local_date.strftime(cfg.datetime_format)
         author = msg.author.name
         new_item = {'name':name,'sender':author,'time':str(date)}
@@ -57,11 +57,11 @@ def last_films(req):
         return '```\nExample: !lastfilms 5\n```'
 
 def rnd_film():   
-    movie_search = movie_search_module.MovieSearch(cfg.google_key, cfg.google_search_id) 
+    search = movie_search.MovieSearch(cfg.google_key, cfg.google_search_id) 
     if (len(watch_films)==0):
         return ':sweat_smile: empty films list'
     num = rnd.randint(0,len(watch_films)-1)
-    msg = ":video_camera: Today's film: " + watch_films[num]['name'] + "\n Link: " + movie_search.get_movie_link(watch_films[num]['name'])
+    msg = ":video_camera: Today's film: " + watch_films[num]['name'] + "\n Link: " + search.get_movie_link(watch_films[num]['name'])
     return msg
 
 def set_watched(msg):
