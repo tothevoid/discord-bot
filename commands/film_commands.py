@@ -4,7 +4,7 @@ from datetime import timedelta
 import json
 import config as cfg
 from services import movie_search
-from text_processing import wrap_code
+from text_processing import wrap_code, wrap_text, combine_multiline
 
 def load_json(filename: str):
     """
@@ -30,7 +30,7 @@ class FilmCommands:
         name = (' '.join(words[1:])).lower().strip()
         updated = [film for film in self.watch_films if film['name'].lower() == name]
 
-        if updated:
+        if not updated:
             author, time = self.append_in_file(msg, name, 'watch')
             return ':white_check_mark: %s added by %s (%s)' % (name, author, time)
         return (':thinking: %s already added by %s (%s)' %
@@ -74,11 +74,10 @@ class FilmCommands:
         if not self.watch_films:
             return ':sweat_smile: empty films list'
         num = rnd.randint(0, len(self.watch_films) - 1)
-        msg = (":film_frames:  Today's film: " +
-               self.watch_films[num]['name'] +
-               ":film_frames: \n Link: " +
-               search.get_movie_link(self.watch_films[num]['name']))
-        return msg
+        film = self.watch_films[num]
+        header = f"Today's film: {film['name']} (Added by: {film['sender']})"
+        body = "Link: " + search.get_movie_link(film['name'])
+        return combine_multiline([wrap_text(header, ":film_frames:"), body])
 
     def set_watched(self, msg):
         """
