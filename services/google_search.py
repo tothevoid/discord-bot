@@ -13,7 +13,7 @@ class GoogleSearch:
         if query == '':
             raise ValueError("Empty query!")
         response = (requests.get("https://www.googleapis.com/customsearch/v1?key=%s&cx=%s&q=%s" %
-                                 (self.__api_key, self.__search_id, query)))
+                                 (self.__api_key, self.__search_id, query+ " film")))
         if response.status_code == 200:
             return response.content
         raise ValueError("Request error: {0}".format(response.status_code))
