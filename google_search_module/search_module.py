@@ -9,7 +9,7 @@ class GoogleSearch:
     def search(self, query):
         if query == '':
             raise ValueError("Empty query!")
-        response = requests.get("https://www.googleapis.com/customsearch/v1?key=%s&cx=%s&q=%s" % (self.__APIKey,self.__search_id,query))        
+        response = requests.get("https://www.googleapis.com/customsearch/v1?key=%s&cx=%s&q=%s" % (self.__APIKey,self.__search_id,query + ' film'))        
         if response.status_code == 200:
             return response.content
         else:
