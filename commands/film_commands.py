@@ -5,6 +5,7 @@ import json
 import config as cfg
 from services import movie_search
 from text_processing import wrap_code, wrap_text, combine_multiline
+from voting_service import VotingService
 
 def load_json(filename: str):
     """
@@ -21,6 +22,7 @@ class FilmCommands:
     def __init__(self):
         self.watch_films = load_json("watch.json")
         self.watched_films = load_json("watched.json")
+        self.voting_service = VotingService()
 
     def add_film(self, msg):
         """
@@ -93,3 +95,11 @@ class FilmCommands:
             watch_films = updated
             return ':thumbsup: Updated'
         return ':sweat_smile: Not found'
+
+    def start_voting(self, msg, sendMessMethod):
+        words = msg.content.split(' ')
+        time = words[1]
+        if (str.isdigit(time)):
+            self.voting_service.StartVoting(time,)
+        else:
+            return "Time is not number"
