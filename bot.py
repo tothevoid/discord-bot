@@ -25,14 +25,9 @@ async def on_message(message: discord.Message):
         if (message.content.startswith(cfg.sign + 'film') and
                 message.author.top_role.name != cfg.admin_role):
             result_msg = '<@!%s>' % (message.author.id) + ' :no_entry: nope'
-        elif message.content.startswith(cfg.sign + 'film_get'):
-            result_msg = film_commands.rnd_film()
-        elif message.content.startswith(cfg.sign + 'films_last'):
-            result_msg = film_commands.last_films(message.content)
-        elif message.content.startswith(cfg.sign + 'film_add'):
-            result_msg = film_commands.add_film(message)
-        elif message.content.startswith(cfg.sign + 'film_watched'):
-            result_msg = film_commands.set_watched(message)
+        filmMethod = film_commands.get_command(message, cfg.sign)
+        if filmMethod is not None:
+            result_msg = filmMethod(message)
         elif message.content.startswith(cfg.sign + 'dev'):
             result_msg = git.get_repo_info()
         else:
