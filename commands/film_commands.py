@@ -30,6 +30,7 @@ class FilmCommands:
 
     def get_command(self, message, prefix):
         commands = [
+            Command("films_all", self.get_all),
             Command("film_get", self.rnd_film),
             Command("films_last", self.last_films),
             Command("film_add", self.add_film),
@@ -112,3 +113,13 @@ class FilmCommands:
             watch_films = updated
             return ':thumbsup: Updated'
         return ':sweat_smile: Not found'
+
+    def get_all(self, msg):
+        """
+        Displays all stored films
+        """
+        header = f":film_frames: Movies list :film_frames:"
+        formatted_films = [':arrow_right: {0} (by {1} at {2})'.format(film["name"], film["sender"], film["time"]) 
+            for film in self.watch_films]
+        formatted_films.insert(0, header)
+        return combine_multiline(formatted_films)
