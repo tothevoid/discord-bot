@@ -6,6 +6,7 @@ import json
 import config as cfg
 from services import movie_search
 from text_processing import wrap_code, wrap_text, combine_multiline
+from voting_service import VotingService
 
 def load_json(filename: str):
     """
@@ -27,6 +28,7 @@ class FilmCommands:
     def __init__(self):
         self.watch_films = load_json("watch.json")
         self.watched_films = load_json("watched.json")
+        self.voting_service = VotingService()
 
     def get_command(self, message, prefix):
         commands = [
@@ -112,7 +114,7 @@ class FilmCommands:
             watch_films = updated
             return ':thumbsup: Updated'
         return ':sweat_smile: Not found'
-
+          
     def get_all(self, msg):
         """
         Displays all stored films
@@ -121,4 +123,13 @@ class FilmCommands:
         formatted_films = [':arrow_right: {0} (by {1} at {2})'.format(film["name"], film["sender"], film["time"]) 
             for film in self.watch_films]
         formatted_films.insert(0, header)
-        return combine_multiline(formatted_films)
+        return combine_multiline(formatted_films) 
+      
+     def start_voting(self, msg, sendMessMethod):
+        words = msg.content.split(' ')
+        time = words[1]
+        if (str.isdigit(time)):
+            self.voting_service.StartVoting(time,)
+        else:
+            return "Time is not number"  
+    
