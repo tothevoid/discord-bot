@@ -1,4 +1,4 @@
 .vscode
 watch*.json
-config.py
+dev_config.py
 __pycache__

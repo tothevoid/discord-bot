@@ -41,7 +41,6 @@ class FilmCommands:
                 return cmd.method
         return None
 
-
     def add_film(self, msg):
         """
         Adds the film to watch list

@@ -2,8 +2,17 @@
 import commands.github as git
 from commands.film_commands import FilmCommands
 import discord
-import config as cfg
+
+try:
+    import dev_config as cfg
+    print("Dev config loaded")
+except ImportError:
+    import config as cfg
+    print("Default config loaded")
+
 from text_processing import wrap_code
+
+print("Connecting...")
 
 client = discord.Client()
 film_commands = FilmCommands()
@@ -11,24 +20,23 @@ film_commands = FilmCommands()
 @client.event
 async def on_ready():
     """Handles the completed connection to the server"""
-    print('Bot loaded:')
-    print(client.user.name, client.user.id)
+    print('Successfully connected as ' + client.user.name)
 
 @client.event
 async def on_message(message: discord.Message):
     """Handles chat message and processed it"""
     channel = client.get_channel(message.channel.id)
     result_msg = ''
-    if not message.content.startswith(cfg.sign) or message.author == client.user:
+    if not message.content.startswith(cfg.cmd_prefix) or message.author == client.user:
         return
     try:
-        if (message.content.startswith(cfg.sign + 'film') and
+        if (message.content.startswith(cfg.cmd_prefix + 'film') and
                 message.author.top_role.name != cfg.admin_role):
             result_msg = '<@!%s>' % (message.author.id) + ' :no_entry: nope'
-        filmMethod = film_commands.get_command(message, cfg.sign)
+        filmMethod = film_commands.get_command(message, cfg.cmd_prefix)
         if filmMethod is not None:
             result_msg = filmMethod(message)
-        elif message.content.startswith(cfg.sign + 'dev'):
+        elif message.content.startswith(cfg.cmd_prefix + 'dev'):
             result_msg = git.get_repo_info()
         else:
             result_msg = ":x: Unknown command"
