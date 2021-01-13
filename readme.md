@@ -8,15 +8,14 @@
 
     * token - [токен бота discord](https://discord.com/developers/applications/)
     * cmd_prefix - знак перед командой (н-р: !);
-    * repo_url = репозиторий бота (н-р: <https://api.github.com/repos/:owner/:repo/commits>);
-    * gmt = Часовой пояс (н-р: 3);
-    * datetime_format = 'паттерн даты (н-р: %H:%M %d-%m-%y)';
-    * admin_role = 'название роли на сервере, для которой будут разрешены команды (н-р: @everyone)';
-    * google_key = google api-токен;
+    * repo_url - репозиторий бота (н-р: <https://api.github.com/repos/:owner/:repo/commits>);
+    * gmt - часовой пояс (н-р: 3);
+    * datetime_format - паттерн даты (н-р: %H:%M %d-%m-%y);
+    * admin_role - название роли на сервере, для которой будут разрешены команды (н-р: @everyone);
+    * google_key - google api-токен;
     * google_search_id - id поисковой системы (для поиска по конкретному сайту) <https://cse.google.com/cse/create/new>.
 
-2. Добавить файлы watch.txt и watched.txt
-3. Установить зависмости:
+2. Установить зависмости:
 
     Автоматически:
         pip install -r ./requirements.txt

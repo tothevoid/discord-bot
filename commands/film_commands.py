@@ -125,7 +125,7 @@ class FilmCommands:
         formatted_films.insert(0, header)
         return combine_multiline(formatted_films) 
       
-     def start_voting(self, msg, sendMessMethod):
+    def start_voting(self, msg, sendMessMethod):
         words = msg.content.split(' ')
         time = words[1]
         if (str.isdigit(time)):
