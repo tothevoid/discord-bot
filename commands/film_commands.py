@@ -1,5 +1,6 @@
 """CRUD film commands module"""
 import random as rnd
+import discord
 from datetime import timedelta
 import json
 import config as cfg
@@ -15,6 +16,11 @@ def load_json(filename: str):
         txt = json_file.read()
         return [] if not txt else json.loads(txt)
 
+class Command:
+    def __init__(self, keyword, method):
+        self.keyword = keyword
+        self.method = method
+
 class FilmCommands:
     """
     Watch/watched film lists operations class
@@ -23,6 +29,19 @@ class FilmCommands:
         self.watch_films = load_json("watch.json")
         self.watched_films = load_json("watched.json")
         self.voting_service = VotingService()
+
+    def get_command(self, message, prefix):
+        commands = [
+            Command("films_all", self.get_all),
+            Command("film_get", self.rnd_film),
+            Command("films_last", self.last_films),
+            Command("film_add", self.add_film),
+            Command("film_watched", self.set_watched)
+        ]
+        for cmd in commands:
+            if message.content.startswith(prefix + cmd.keyword):
+                return cmd.method
+        return None
 
     def add_film(self, msg):
         """
@@ -54,13 +73,13 @@ class FilmCommands:
             json.dump(self.watch_films, appendable_file, ensure_ascii=False)
         return author, date
 
-    def last_films(self, message: str):
+    def last_films(self, message):
         """
         Gets the last n-watched films
         """
         if not self.watched_films:
             return ':sweat_smile: watched films list is empty'
-        parts = message.split(' ')
+        parts = message.content.split(' ')
         num = parts[len(parts) - 1]
         if num.isdigit():
             quantity = int(num)
@@ -68,7 +87,7 @@ class FilmCommands:
             return '\n'.join(films)
         return wrap_code('\nExample: !lastfilms 5\n')
 
-    def rnd_film(self):
+    def rnd_film(self, msg):
         """
         Gets the random film in watch list
         """
@@ -95,11 +114,22 @@ class FilmCommands:
             watch_films = updated
             return ':thumbsup: Updated'
         return ':sweat_smile: Not found'
-
-    def start_voting(self, msg, sendMessMethod):
+          
+    def get_all(self, msg):
+        """
+        Displays all stored films
+        """
+        header = f":film_frames: Movies list :film_frames:"
+        formatted_films = [':arrow_right: {0} (by {1} at {2})'.format(film["name"], film["sender"], film["time"]) 
+            for film in self.watch_films]
+        formatted_films.insert(0, header)
+        return combine_multiline(formatted_films) 
+      
+     def start_voting(self, msg, sendMessMethod):
         words = msg.content.split(' ')
         time = words[1]
         if (str.isdigit(time)):
             self.voting_service.StartVoting(time,)
         else:
-            return "Time is not number"
+            return "Time is not number"  
+    
