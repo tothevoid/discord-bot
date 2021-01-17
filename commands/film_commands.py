@@ -6,7 +6,7 @@ import json
 import config as cfg
 from services import movie_search
 from text_processing import wrap_code, wrap_text, combine_multiline
-from voting_service import VotingService
+from .voting_service import VotingService
 
 def load_json(filename: str):
     """
