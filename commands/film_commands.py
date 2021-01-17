@@ -7,12 +7,16 @@ import config as cfg
 from services import movie_search
 from text_processing import wrap_code, wrap_text, combine_multiline
 from .voting_service import VotingService
+import os.path
+from os import path
 
 def load_json(filename: str):
     """
     Gets the json-file data
     """
-    with open(filename, mode='w+', encoding='utf-8') as json_file:
+    if not path.exists(filename):
+        return []
+    with open(filename, mode="r", encoding="utf-8") as json_file:
         txt = json_file.read()
         return [] if not txt else json.loads(txt)
 
@@ -61,7 +65,7 @@ class FilmCommands:
         """
         Appends new data in watch/watched files by pattern 'film name, message sender, message time'
         """
-        with open(fl_name+'.json', mode='w', encoding='utf-8') as appendable_file:
+        with open(fl_name+'.json', mode='w+', encoding='utf-8') as appendable_file:
             local_date = msg.created_at + timedelta(hours=cfg.gmt)
             date = local_date.strftime(cfg.datetime_format)
             author = msg.author.name
@@ -108,7 +112,7 @@ class FilmCommands:
         name = (' '.join(words[1:])).lower().strip()
         updated = [film for film in self.watch_films if film['name'].lower() != name]
         if len(watch_films) != len(updated):
-            with open('watch.json', mode='w', encoding='utf-8') as wacth_file:
+            with open('watch.json', mode='w+', encoding='utf-8') as wacth_file:
                 json.dump(updated, wacth_file, ensure_ascii=False)
             self.append_in_file(msg, name, 'watched')
             watch_films = updated
